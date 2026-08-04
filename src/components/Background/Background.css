@@ -63,3 +63,11 @@
   50% { transform: translate(30px, -40px) scale(1.05); }
   100% { transform: translate(-20px, 20px) scale(0.95); }
 }
+
+@media (max-width: 768px) {
+  .gradient {
+    filter: blur(50px);
+    animation: none;
+    opacity: 0.18;
+  }
+}

@@ -363,3 +363,18 @@
     width: 280px;
   }
 }
+
+@media (max-width: 768px) {
+  .hero-3d-canvas {
+    pointer-events: none !important;
+    touch-action: pan-y !important;
+  }
+  .profile-card-3d {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .profile-glow-ring {
+    animation: none;
+    filter: blur(4px);
+  }
+}
