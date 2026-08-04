@@ -3,6 +3,8 @@ import { FaEnvelope, FaWhatsapp, FaGithub, FaPaperPlane, FaArrowUp } from "react
 import Swal from "sweetalert2";
 import "./Contact.css";
 
+import emailjs from "@emailjs/browser";
+
 function Contact() {
   const form = useRef();
   const [loading, setLoading] = useState(false);
@@ -11,36 +13,60 @@ function Contact() {
   const whatsappUrl = "https://wa.me/923080763337";
   const githubUrl = "https://github.com/AIworking860-art";
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     const formData = new FormData(form.current);
-    const name = formData.get("name");
-    const email = formData.get("email");
-    const message = formData.get("message");
 
-    // Open default mail client with prefilled subject & body
-    const mailtoUrl = `mailto:${emailAddress}?subject=${encodeURIComponent(
-      `AI Project Inquiry from ${name}`
-    )}&body=${encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-    )}`;
+    formData.append(
+      "access_key",
+      import.meta.env.VITE_WEB3FORMS_ACCESS_KEY
+    );
 
-    window.location.href = mailtoUrl;
+    formData.append("subject", "New Portfolio Contact Form");
 
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        Swal.fire({
+          icon: "success",
+          title: "Message Sent!",
+          text: "Thank you! Your message has been sent successfully.",
+          confirmButtonColor: "#06b6d4",
+          background: "#0a0f1d",
+          color: "#ffffff",
+        });
+
+        form.current.reset();
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Failed!",
+          text: result.message || "Something went wrong.",
+          confirmButtonColor: "#06b6d4",
+          background: "#0a0f1d",
+          color: "#ffffff",
+        });
+      }
+    } catch (error) {
       Swal.fire({
-        icon: "success",
-        title: "Opening Email Client!",
-        text: "Redirecting to your default email app to send the message directly to Muhammad Hashir.",
+        icon: "error",
+        title: "Error!",
+        text: "Unable to send message. Please try again.",
         confirmButtonColor: "#06b6d4",
         background: "#0a0f1d",
         color: "#ffffff",
       });
-      if (form.current) form.current.reset();
-    }, 600);
+    }
+
+    setLoading(false);
   };
 
   return (
