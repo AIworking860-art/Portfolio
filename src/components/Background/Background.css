@@ -1,0 +1,65 @@
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -100;
+  background: #030712;
+  pointer-events: none;
+}
+
+.gradient {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(140px);
+  animation: floatGlow 12s ease-in-out infinite alternate;
+}
+
+.gradient-one {
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(circle, #8b5cf6 0%, rgba(139, 92, 246, 0.2) 70%);
+  top: -200px;
+  left: -200px;
+  opacity: 0.28;
+}
+
+.gradient-two {
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, #06b6d4 0%, rgba(6, 182, 212, 0.2) 70%);
+  right: -150px;
+  bottom: -150px;
+  opacity: 0.25;
+  animation-delay: 4s;
+}
+
+.gradient-three {
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, #3b82f6 0%, transparent 70%);
+  top: 40%;
+  left: 30%;
+  opacity: 0.15;
+  animation-delay: 2s;
+}
+
+.grid {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 50px 50px;
+  mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 90%);
+  opacity: 0.4;
+}
+
+@keyframes floatGlow {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -40px) scale(1.05); }
+  100% { transform: translate(-20px, 20px) scale(0.95); }
+}

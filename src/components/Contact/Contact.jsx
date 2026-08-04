@@ -1,0 +1,170 @@
+import { useRef, useState } from "react";
+import { FaEnvelope, FaWhatsapp, FaGithub, FaPaperPlane, FaArrowUp } from "react-icons/fa";
+import Swal from "sweetalert2";
+import "./Contact.css";
+
+function Contact() {
+  const form = useRef();
+  const [loading, setLoading] = useState(false);
+
+  const emailAddress = "hashir.muhmmad1427@gmail.com";
+  const whatsappUrl = "https://wa.me/923080763337";
+  const githubUrl = "https://github.com/AIworking860-art";
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData(form.current);
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const message = formData.get("message");
+
+    // Open default mail client with prefilled subject & body
+    const mailtoUrl = `mailto:${emailAddress}?subject=${encodeURIComponent(
+      `AI Project Inquiry from ${name}`
+    )}&body=${encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+    )}`;
+
+    window.location.href = mailtoUrl;
+
+    setTimeout(() => {
+      setLoading(false);
+      Swal.fire({
+        icon: "success",
+        title: "Opening Email Client!",
+        text: "Redirecting to your default email app to send the message directly to Muhammad Hashir.",
+        confirmButtonColor: "#06b6d4",
+        background: "#0a0f1d",
+        color: "#ffffff",
+      });
+      if (form.current) form.current.reset();
+    }, 600);
+  };
+
+  return (
+    <section id="contact" className="contact-section">
+      <div className="contact-container">
+        
+        {/* Section Header */}
+        <div className="contact-header text-center">
+          <div className="section-badge">GET IN TOUCH</div>
+          <h2 className="contact-title">
+            Let's Build Something <span className="text-gradient">Intelligent</span>
+          </h2>
+          <p className="contact-subtitle">
+            Available for AI Development, Autonomous Agents, Generative AI models, and n8n Workflow Automations.
+          </p>
+        </div>
+
+        <div className="contact-grid">
+          
+          {/* Left Column: ONLY GitHub, Email, WhatsApp Cards */}
+          <div className="contact-methods">
+            
+            {/* Email Card (Click opens default email app) */}
+            <a href={`mailto:${emailAddress}`} className="contact-card glass-panel email-card">
+              <div className="contact-card-glow"></div>
+              <div className="contact-icon-box cyan">
+                <FaEnvelope />
+              </div>
+              <div className="contact-card-info">
+                <span className="method-label">Official Email</span>
+                <h3 className="method-value">{emailAddress}</h3>
+                <span className="method-action">Click to send email &rarr;</span>
+              </div>
+            </a>
+
+            {/* WhatsApp Card (Click opens chat directly) */}
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="contact-card glass-panel whatsapp-card"
+            >
+              <div className="contact-card-glow"></div>
+              <div className="contact-icon-box emerald">
+                <FaWhatsapp />
+              </div>
+              <div className="contact-card-info">
+                <span className="method-label">WhatsApp Direct</span>
+                <h3 className="method-value">+92 308 0763337</h3>
+                <span className="method-action">Start instant chat &rarr;</span>
+              </div>
+            </a>
+
+            {/* GitHub Card */}
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="contact-card glass-panel github-card"
+            >
+              <div className="contact-card-glow"></div>
+              <div className="contact-icon-box purple">
+                <FaGithub />
+              </div>
+              <div className="contact-card-info">
+                <span className="method-label">GitHub Repositories</span>
+                <h3 className="method-value">AIworking860-art</h3>
+                <span className="method-action">View open-source code &rarr;</span>
+              </div>
+            </a>
+
+          </div>
+
+          {/* Right Column: Direct Message Form */}
+          <div className="contact-form-wrapper glass-panel">
+            <h3 className="form-heading">Send a Direct Message</h3>
+            <p className="form-subheading">Fill in the details to launch a conversation.</p>
+
+            <form ref={form} onSubmit={handleFormSubmit} className="contact-form">
+              <div className="input-group">
+                <label htmlFor="name">Your Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="e.g. Alex Morgan"
+                  required
+                />
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="email">Your Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="e.g. alex@company.com"
+                  required
+                />
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="message">Project Description</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="5"
+                  placeholder="Describe your Python, Agentic AI, GenAI, or n8n automation project..."
+                  required
+                ></textarea>
+              </div>
+
+              <button type="submit" className="btn-send-message" disabled={loading}>
+                <FaPaperPlane />
+                <span>{loading ? "Preparing Message..." : "Send Message"}</span>
+              </button>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+export default Contact;
