@@ -8,6 +8,28 @@ const GITHUB_USERNAME = "AIworking860-art";
 export const EXCLUDED_REPOS = ["portfolio", "aiworking860-art", "aiworking-art"];
 
 /**
+ * Helper to determine if a repository homepage link is a valid external project demo.
+ * Ignores links that point back to the portfolio site itself.
+ */
+export function getLiveDemoUrl(homepage) {
+  if (!homepage || typeof homepage !== "string") return null;
+  const cleaned = homepage.trim().toLowerCase();
+  if (!cleaned || cleaned === "#" || cleaned === "/") return null;
+
+  // Filter out URLs that point back to the portfolio itself
+  const currentHost = typeof window !== "undefined" ? window.location.hostname.toLowerCase() : "";
+  if (
+    cleaned.includes("portfolio-m8u7.vercel.app") ||
+    cleaned.includes("portfolio-nexora-labs") ||
+    (currentHost && currentHost.length > 3 && cleaned.includes(currentHost))
+  ) {
+    return null;
+  }
+
+  return homepage.trim();
+}
+
+/**
  * Dynamically fetches authentic public repositories from GitHub API.
  * Automatically excludes repos listed in EXCLUDED_REPOS.
  * Returns exact data array from https://api.github.com/users/AIworking860-art/repos

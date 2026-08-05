@@ -6,7 +6,7 @@ import {
   FaArrowLeft, FaCalendarAlt, FaClock, FaExternalLinkAlt,
   FaTag, FaEye, FaLock, FaUnlock,
 } from "react-icons/fa";
-import { fetchGithubRepoDetail, GITHUB_USERNAME } from "../components/Projects/github";
+import { fetchGithubRepoDetail, GITHUB_USERNAME, getLiveDemoUrl } from "../components/Projects/github";
 import "./ProjectDetailPage.css";
 
 /* ─── Language Color Map ─────────────────────── */
@@ -195,9 +195,9 @@ function ProjectDetailPage() {
               >
                 <FaGithub /> View on GitHub
               </a>
-              {repo.homepage && (
+              {getLiveDemoUrl(repo.homepage) && (
                 <a
-                  href={repo.homepage}
+                  href={getLiveDemoUrl(repo.homepage)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="pdp-btn-secondary"
@@ -298,11 +298,11 @@ function ProjectDetailPage() {
                 <span className="pdp-info-label">Last Updated</span>
                 <span className="pdp-info-value">{formatDate(repo.updated_at)}</span>
               </li>
-              {repo.homepage && (
+              {getLiveDemoUrl(repo.homepage) && (
                 <li>
                   <span className="pdp-info-label">Live Demo</span>
-                  <a href={repo.homepage} target="_blank" rel="noopener noreferrer" className="pdp-info-link">
-                    {repo.homepage} <FaExternalLinkAlt />
+                  <a href={getLiveDemoUrl(repo.homepage)} target="_blank" rel="noopener noreferrer" className="pdp-info-link">
+                    {getLiveDemoUrl(repo.homepage)} <FaExternalLinkAlt />
                   </a>
                 </li>
               )}

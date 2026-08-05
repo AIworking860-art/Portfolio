@@ -5,7 +5,7 @@ import {
   FaGithub, FaStar, FaCodeBranch, FaExclamationTriangle,
   FaFolderOpen, FaFolderPlus, FaEye, FaSearch, FaTimes,
 } from "react-icons/fa";
-import { fetchGithubProjects, GITHUB_USERNAME } from "../components/Projects/github";
+import { fetchGithubProjects, GITHUB_USERNAME, getLiveDemoUrl } from "../components/Projects/github";
 import "./ProjectsPage.css";
 
 /* ─── Language Color Map ─────────────────────── */
@@ -84,8 +84,8 @@ function TiltCard({ repo, index }) {
         <a href={repo.html_url} target="_blank" rel="noopener noreferrer" className="pp-btn-github">
           <FaGithub /> GitHub
         </a>
-        {repo.homepage && (
-          <a href={repo.homepage} target="_blank" rel="noopener noreferrer" className="pp-btn-demo">
+        {getLiveDemoUrl(repo.homepage) && (
+          <a href={getLiveDemoUrl(repo.homepage)} target="_blank" rel="noopener noreferrer" className="pp-btn-demo">
             🌐 Live Demo
           </a>
         )}
