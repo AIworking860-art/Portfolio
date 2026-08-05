@@ -1,49 +1,48 @@
 import { lazy, Suspense } from "react";
-import Background from "./components/Background/Background";
-import Navbar from "./components/Navbar/Navbar";
-import About from "./components/About/About";
-import Skills from "./components/Skills/Skills";
-import Contact from "./components/Contact/Contact";
-import Footer from "./components/Footer/Footer";
-import GitHubSection from "./components/GitHub/GitHubSection";
+import { HashRouter, Routes, Route } from "react-router-dom";
+import PageLayout from "./components/Layout/PageLayout";
 
-const Hero = lazy(() => import("./components/Hero/Hero"));
-const Projects = lazy(() => import("./components/Projects/Projects"));
+const HomePage = lazy(() => import("./pages/HomePage"));
+const ProjectsPage = lazy(() => import("./pages/ProjectsPage"));
+const ProjectDetailPage = lazy(() => import("./pages/ProjectDetailPage"));
+
+const PageLoading = () => (
+  <div className="page-full-loader">
+    <div className="loader-ring"></div>
+    <p>Loading...</p>
+  </div>
+);
 
 function App() {
   return (
-    <>
-      {/* 3D WebGL Background Canvas & Glow Mesh */}
-      <Background />
+    <HashRouter>
+      <Suspense fallback={<PageLoading />}>
+        <Routes>
+          {/* Home — single-page layout with all sections */}
+          <Route path="/" element={<HomePage />} />
 
-      {/* Floating Glass Navbar */}
-      <Navbar />
+          {/* Dedicated full projects listing page */}
+          <Route
+            path="/projects"
+            element={
+              <PageLayout>
+                <ProjectsPage />
+              </PageLayout>
+            }
+          />
 
-      {/* Hero Section */}
-      <Suspense fallback={<div className="section-loading">Loading 3D Experience...</div>}>
-        <Hero />
+          {/* Individual project detail page */}
+          <Route
+            path="/projects/:repoName"
+            element={
+              <PageLayout>
+                <ProjectDetailPage />
+              </PageLayout>
+            }
+          />
+        </Routes>
       </Suspense>
-
-      {/* About Me Section */}
-      <About />
-
-      {/* Skills Section (Strictly 4 core skills) */}
-      <Skills />
-
-      {/* Projects Section (Real-time GitHub fetch) */}
-      <Suspense fallback={<div className="section-loading">Loading Repositories...</div>}>
-        <Projects />
-      </Suspense>
-
-      {/* GitHub Profile Showcase Card */}
-      <GitHubSection />
-
-      {/* Contact Section (Email, WhatsApp, GitHub) */}
-      <Contact />
-
-      {/* Footer */}
-      <Footer />
-    </>
+    </HashRouter>
   );
 }
 

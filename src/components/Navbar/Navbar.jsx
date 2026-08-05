@@ -1,39 +1,70 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { FaGithub, FaWhatsapp, FaBars, FaTimes } from "react-icons/fa";
 import "./Navbar.css";
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { pathname } = useLocation();
+
+  const isHome = pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 40) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 40);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  // Renders a nav link — scroll anchor on home, router link otherwise
+  const NavLink = ({ href, to, children, onClick }) => {
+    if (isHome && href) {
+      return (
+        <a href={href} className="nav-link" onClick={onClick}>
+          {children}
+        </a>
+      );
+    }
+    return (
+      <Link
+        to={to || "/"}
+        className={`nav-link ${pathname === to ? "active" : ""}`}
+        onClick={onClick}
+      >
+        {children}
+      </Link>
+    );
+  };
+
   return (
     <header className={`navbar-header ${scrolled ? "scrolled" : ""}`}>
       <div className="navbar-container">
-        <a href="#home" className="navbar-logo">
+        <Link to="/" className="navbar-logo">
           <span className="logo-badge">AI</span>
-          <span className="logo-name">Muhammad<span className="logo-highlight">Hashir</span></span>
-        </a>
+          <span className="logo-name">
+            Muhammad<span className="logo-highlight">Hashir</span>
+          </span>
+        </Link>
 
         {/* Desktop Nav Links */}
         <nav className="navbar-links">
-          <a href="#about" className="nav-link">About</a>
-          <a href="#skills" className="nav-link">Skills</a>
-          <a href="#projects" className="nav-link">Projects</a>
-          <a href="#github" className="nav-link">GitHub</a>
-          <a href="#contact" className="nav-link">Contact</a>
+          <NavLink href="#about" to="/#about">About</NavLink>
+          <NavLink href="#skills" to="/#skills">Skills</NavLink>
+          <Link
+            to="/projects"
+            className={`nav-link ${pathname === "/projects" || pathname.startsWith("/projects/") ? "active" : ""}`}
+          >
+            Projects
+          </Link>
+          <NavLink href="#github" to="/#github">GitHub</NavLink>
+          <NavLink href="#contact" to="/#contact">Contact</NavLink>
         </nav>
 
         {/* Action Buttons */}
@@ -47,7 +78,7 @@ function Navbar() {
           >
             <FaGithub />
           </a>
-          
+
           <a
             href="https://wa.me/923080763337"
             target="_blank"
@@ -71,14 +102,36 @@ function Navbar() {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="mobile-drawer">
-          <a href="#about" onClick={() => setMobileMenuOpen(false)}>About</a>
-          <a href="#skills" onClick={() => setMobileMenuOpen(false)}>Skills</a>
-          <a href="#projects" onClick={() => setMobileMenuOpen(false)}>Projects</a>
-          <a href="#github" onClick={() => setMobileMenuOpen(false)}>GitHub</a>
-          <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
+          {isHome ? (
+            <>
+              <a href="#about" onClick={() => setMobileMenuOpen(false)}>About</a>
+              <a href="#skills" onClick={() => setMobileMenuOpen(false)}>Skills</a>
+            </>
+          ) : (
+            <>
+              <Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
+            </>
+          )}
+          <Link
+            to="/projects"
+            className={pathname === "/projects" || pathname.startsWith("/projects/") ? "active" : ""}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Projects
+          </Link>
+          {isHome && (
+            <>
+              <a href="#github" onClick={() => setMobileMenuOpen(false)}>GitHub</a>
+              <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
+            </>
+          )}
           <div className="mobile-socials">
-            <a href="https://github.com/AIworking860-art" target="_blank" rel="noreferrer"><FaGithub /> GitHub</a>
-            <a href="https://wa.me/923080763337" target="_blank" rel="noreferrer"><FaWhatsapp /> WhatsApp</a>
+            <a href="https://github.com/AIworking860-art" target="_blank" rel="noreferrer">
+              <FaGithub /> GitHub
+            </a>
+            <a href="https://wa.me/923080763337" target="_blank" rel="noreferrer">
+              <FaWhatsapp /> WhatsApp
+            </a>
           </div>
         </div>
       )}

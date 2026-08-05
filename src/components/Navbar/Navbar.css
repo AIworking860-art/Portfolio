@@ -90,6 +90,14 @@
   width: 100%;
 }
 
+.nav-link.active {
+  color: #06b6d4;
+}
+
+.nav-link.active::after {
+  width: 100%;
+}
+
 .navbar-actions {
   display: flex;
   align-items: center;
