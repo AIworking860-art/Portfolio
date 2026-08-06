@@ -5,7 +5,19 @@ const GITHUB_USERNAME = "AIworking860-art";
  * These repos remain on GitHub — only filtered on the frontend.
  * Add/remove names here to control visibility (case-insensitive).
  */
-export const EXCLUDED_REPOS = ["portfolio", "aiworking860-art", "aiworking-art"];
+export const EXCLUDED_REPOS = ["portfolio", "aiworking860-art", "aiworking-art", ".github"];
+
+/**
+ * Checks if a repository should be hidden from portfolio display.
+ * Strictly excludes "Portfolio" and "AIworking860-art" repositories while allowing
+ * all other current and future GitHub repositories pushed to @AIworking860-art.
+ */
+export function isExcludedRepo(repoName) {
+  if (!repoName || typeof repoName !== "string") return true;
+  const cleaned = repoName.toLowerCase().trim();
+  const normalizedExclusions = EXCLUDED_REPOS.map((name) => name.toLowerCase().trim());
+  return normalizedExclusions.includes(cleaned);
+}
 
 /**
  * Helper to determine if a repository homepage link is a valid external project demo.
@@ -31,9 +43,8 @@ export function getLiveDemoUrl(homepage) {
 
 /**
  * Dynamically fetches authentic public repositories from GitHub API.
- * Automatically excludes repos listed in EXCLUDED_REPOS.
- * Returns exact data array from https://api.github.com/users/AIworking860-art/repos
- * sorted by most recently updated. No hardcoded or fake projects.
+ * Automatically excludes repos listed in EXCLUDED_REPOS (e.g. Portfolio and AIworking860-art).
+ * Any other project pushed to GitHub will automatically appear on the portfolio.
  */
 export async function fetchGithubProjects() {
   const url = `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`;
@@ -54,12 +65,7 @@ export async function fetchGithubProjects() {
     throw new Error("Invalid GitHub API response format");
   }
 
-  // Filter out excluded repositories (case-insensitive & trimmed comparison)
-  const normalizedExclusions = EXCLUDED_REPOS.map((name) => name.toLowerCase().trim());
-
-  return data.filter(
-    (repo) => repo && repo.name && !normalizedExclusions.includes(repo.name.toLowerCase().trim())
-  );
+  return data.filter((repo) => repo && repo.name && !isExcludedRepo(repo.name));
 }
 
 /**
@@ -68,8 +74,7 @@ export async function fetchGithubProjects() {
  * Blocks details if repo is in EXCLUDED_REPOS.
  */
 export async function fetchGithubRepoDetail(repoName) {
-  const normalizedExclusions = EXCLUDED_REPOS.map((name) => name.toLowerCase().trim());
-  if (normalizedExclusions.includes(repoName.toLowerCase().trim())) {
+  if (isExcludedRepo(repoName)) {
     throw new Error("Repository is excluded from portfolio display.");
   }
 
