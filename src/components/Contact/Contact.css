@@ -202,32 +202,65 @@
   background: rgba(3, 7, 18, 0.85);
 }
 
-.btn-send-message {
+.form-action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.btn-send-email,
+.btn-send-whatsapp {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
-  background: linear-gradient(135deg, #06b6d4, #3b82f6);
   color: #ffffff;
   font-weight: 700;
-  font-size: 1rem;
-  padding: 0.95rem 1.5rem;
+  font-size: 0.95rem;
+  padding: 0.95rem 1.25rem;
   border-radius: 14px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 0 25px rgba(6, 182, 212, 0.4);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  margin-top: 0.5rem;
+  text-decoration: none;
 }
 
-.btn-send-message:hover {
+.btn-send-email {
+  background: linear-gradient(135deg, #06b6d4, #3b82f6);
+  box-shadow: 0 0 25px rgba(6, 182, 212, 0.35);
+}
+
+.btn-send-email:hover:not(:disabled) {
   transform: translateY(-3px);
-  box-shadow: 0 0 35px rgba(6, 182, 212, 0.7);
+  box-shadow: 0 0 35px rgba(6, 182, 212, 0.65);
   background: linear-gradient(135deg, #0891b2, #2563eb);
+}
+
+.btn-send-email:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-send-whatsapp {
+  background: linear-gradient(135deg, #25d366, #059669);
+  box-shadow: 0 0 25px rgba(37, 211, 102, 0.35);
+}
+
+.btn-send-whatsapp:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 35px rgba(37, 211, 102, 0.65);
+  background: linear-gradient(135deg, #16a34a, #047857);
 }
 
 @media (max-width: 968px) {
   .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 580px) {
+  .form-action-buttons {
     grid-template-columns: 1fr;
   }
 }

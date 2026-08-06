@@ -69,6 +69,42 @@ function Contact() {
     setLoading(false);
   };
 
+  const handleWhatsAppSend = (e) => {
+    e.preventDefault();
+    if (!form.current) return;
+
+    const name = form.current.name.value.trim();
+    const email = form.current.email.value.trim();
+    const message = form.current.message.value.trim();
+
+    if (!name || !email || !message) {
+      Swal.fire({
+        icon: "warning",
+        title: "Incomplete Details",
+        text: "Please fill in your Name, Email, and Message before sending via WhatsApp.",
+        confirmButtonColor: "#25d366",
+        background: "#0a0f1d",
+        color: "#ffffff",
+      });
+      return;
+    }
+
+    const formattedText = `Hello Hashir! 👋\n\n*Name:* ${name}\n*Email:* ${email}\n\n*Project Details / Message:*\n${message}`;
+    const encodedText = encodeURIComponent(formattedText);
+    const whatsappLink = `https://wa.me/923080763337?text=${encodedText}`;
+
+    window.open(whatsappLink, "_blank", "noopener,noreferrer");
+
+    Swal.fire({
+      icon: "success",
+      title: "Opening WhatsApp!",
+      text: "Your message was pre-filled and opened in WhatsApp.",
+      confirmButtonColor: "#25d366",
+      background: "#0a0f1d",
+      color: "#ffffff",
+    });
+  };
+
   return (
     <section id="contact" className="contact-section">
       <div className="contact-container">
@@ -143,7 +179,7 @@ function Contact() {
           {/* Right Column: Direct Message Form */}
           <div className="contact-form-wrapper glass-panel">
             <h3 className="form-heading">Send a Direct Message</h3>
-            <p className="form-subheading">Fill in the details to launch a conversation.</p>
+            <p className="form-subheading">Fill in your details and choose your preferred destination (Gmail or WhatsApp).</p>
 
             <form ref={form} onSubmit={handleFormSubmit} className="contact-form">
               <div className="input-group">
@@ -179,10 +215,17 @@ function Contact() {
                 ></textarea>
               </div>
 
-              <button type="submit" className="btn-send-message" disabled={loading}>
-                <FaPaperPlane />
-                <span>{loading ? "Preparing Message..." : "Send Message"}</span>
-              </button>
+              <div className="form-action-buttons">
+                <button type="submit" className="btn-send-email" disabled={loading}>
+                  <FaEnvelope />
+                  <span>{loading ? "Sending Email..." : "Send via Gmail"}</span>
+                </button>
+
+                <button type="button" onClick={handleWhatsAppSend} className="btn-send-whatsapp">
+                  <FaWhatsapp />
+                  <span>Send via WhatsApp</span>
+                </button>
+              </div>
             </form>
           </div>
 
