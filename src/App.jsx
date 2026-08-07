@@ -4,15 +4,16 @@ import Background from "./components/Background/Background";
 import Navbar from "./components/Navbar/Navbar";
 import About from "./components/About/About";
 import Skills from "./components/Skills/Skills";
+import Experience from "./components/Experience/Experience";
 import Contact from "./components/Contact/Contact";
 import Footer from "./components/Footer/Footer";
 import GitHubSection from "./components/GitHub/GitHubSection";
-import ProjectDetailPage from "./components/Projects/ProjectDetailPage";
 
-const Hero     = lazy(() => import("./components/Hero/Hero"));
-const Projects = lazy(() => import("./components/Projects/Projects"));
+const Hero              = lazy(() => import("./components/Hero/Hero"));
+const ProjectsPage      = lazy(() => import("./pages/ProjectsPage"));
+const ProjectDetailPage = lazy(() => import("./components/Projects/ProjectDetailPage"));
 
-// Home Page — Single Page Scroll
+// Home Page — Single Page Scroll (Projects removed from Home Page as requested!)
 function HomePage() {
   return (
     <>
@@ -25,11 +26,7 @@ function HomePage() {
 
       <About />
       <Skills />
-
-      <Suspense fallback={<div className="section-loading">Loading Repositories...</div>}>
-        <Projects />
-      </Suspense>
-
+      <Experience />
       <GitHubSection />
       <Contact />
       <Footer />
@@ -42,8 +39,11 @@ function App() {
     <HashRouter>
       <Suspense fallback={<div className="section-loading">Loading...</div>}>
         <Routes>
-          {/* Main Portfolio (Single Page Scroll) */}
+          {/* Main Portfolio Home Page */}
           <Route path="/" element={<HomePage />} />
+
+          {/* Dedicated Projects Catalog Page */}
+          <Route path="/projects" element={<ProjectsPage />} />
 
           {/* Project Detail Page */}
           <Route path="/projects/:repoName" element={<ProjectDetailPage />} />

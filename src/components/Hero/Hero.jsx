@@ -1,10 +1,19 @@
 import { TypeAnimation } from "react-type-animation";
-import { FaGithub, FaWhatsapp, FaEnvelope, FaCode, FaArrowRight, FaRobot, FaCogs } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { FaGithub, FaWhatsapp, FaEnvelope, FaCode, FaArrowRight, FaRobot, FaFileDownload, FaChevronDown } from "react-icons/fa";
 import HeroCanvas from "./HeroCanvas";
 import MotionWrapper from "./MotionWrapper";
 import "./Hero.css";
 
 function Hero() {
+  const handleDownloadCV = () => {
+    // Generate/download or open standard CV view
+    const link = document.createElement("a");
+    link.href = "mailto:hashir.muhmmad1427@gmail.com?subject=Request%20CV%20-%20Muhammad%20Hashir";
+    link.target = "_blank";
+    link.click();
+  };
+
   return (
     <section className="hero-section" id="home">
       <div className="hero-container">
@@ -13,7 +22,7 @@ function Hero() {
         <MotionWrapper className="hero-content">
           <div className="hero-status-pill">
             <span className="status-dot"></span>
-            <span>Available for International AI & Automation Projects</span>
+            <span>Available for Hire • AI & Automation Projects</span>
           </div>
 
           <h4 className="hero-greeting">Hello, I'm</h4>
@@ -22,7 +31,7 @@ function Hero() {
           </h1>
 
           <div className="hero-subtitle-wrapper">
-            <span className="static-prefix">Professional </span>
+            <span className="static-prefix">Specialized </span>
             <TypeAnimation
               sequence={[
                 "AI & Python Developer", 2200,
@@ -38,30 +47,36 @@ function Hero() {
 
           <p className="hero-bio">
             Engineering high-performance Python backends, autonomous Agentic AI systems, 
-            Generative AI solutions, and enterprise n8n workflow automations for startups 
-            and global companies.
+            Generative AI solutions, and enterprise n8n workflow automations for international 
+            startups and global tech companies.
           </p>
 
-          {/* Required Buttons */}
+          {/* Action Buttons */}
           <div className="hero-action-buttons">
-            <a href="#projects" className="btn-primary-glow">
-              <span>View Projects</span>
+            <a href="#contact" className="btn-primary-glow">
+              <span>Hire Me</span>
               <FaArrowRight className="btn-icon" />
             </a>
+
+            <button onClick={handleDownloadCV} className="btn-glass cursor-pointer">
+              <FaFileDownload className="btn-icon text-emerald-400" />
+              <span>Download CV</span>
+            </button>
+
+            <Link to="/projects" className="btn-glass">
+              <FaCode className="btn-icon text-cyan-400" />
+              <span>Explore Projects</span>
+            </Link>
 
             <a
               href="https://github.com/AIworking860-art"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-glass"
+              title="GitHub Profile"
             >
               <FaGithub className="btn-icon" />
               <span>GitHub</span>
-            </a>
-
-            <a href="#contact" className="btn-glass">
-              <FaEnvelope className="btn-icon" />
-              <span>Contact Me</span>
             </a>
 
             <a
@@ -94,7 +109,7 @@ function Hero() {
             </div>
 
             <div className="metric-item glass-panel">
-              <FaCogs className="metric-icon blue" />
+              <FaEnvelope className="metric-icon blue" />
               <div>
                 <h4 className="metric-val">n8n Workflows</h4>
                 <p className="metric-lbl">Process Automation</p>
@@ -119,8 +134,7 @@ function Hero() {
                   alt="Muhammad Hashir - Official Professional Profile"
                   className="profile-img"
                   onError={(e) => {
-                    // Fallback to assets if needed
-                    e.target.src = "/src/assets/profile.jpg";
+                    e.target.src = "/muhammad-hashir.jpg";
                   }}
                 />
               </div>
@@ -140,6 +154,12 @@ function Hero() {
         </div>
 
       </div>
+
+      {/* Scroll Down Indicator */}
+      <a href="#about" className="scroll-indicator" aria-label="Scroll to About Section">
+        <span className="scroll-text">Scroll Down</span>
+        <FaChevronDown className="scroll-arrow" />
+      </a>
     </section>
   );
 }
