@@ -14,12 +14,7 @@ function GitHubSection() {
 
           <div className="github-card-left">
             <div className="github-avatar-box">
-              <img
-                src="/Portfolio/muhammad-hashir.jpg"
-                alt="Muhammad Hashir"
-                className="github-avatar-img"
-                onError={(e) => { e.target.onerror = null; e.target.src = "/muhammad-hashir.jpg"; }}
-              />
+              <FaGithub className="github-large-icon" />
             </div>
 
             <div className="github-identity">

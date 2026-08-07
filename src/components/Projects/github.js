@@ -1,50 +1,9 @@
 const GITHUB_USERNAME = "AIworking860-art";
 
 /**
- * Repositories to hide from the portfolio display.
- * These repos remain on GitHub — only filtered on the frontend.
- * Add/remove names here to control visibility (case-insensitive).
- */
-export const EXCLUDED_REPOS = ["portfolio", "aiworking860-art", "aiworking-art", ".github"];
-
-/**
- * Checks if a repository should be hidden from portfolio display.
- * Strictly excludes "Portfolio" and "AIworking860-art" repositories while allowing
- * all other current and future GitHub repositories pushed to @AIworking860-art.
- */
-export function isExcludedRepo(repoName) {
-  if (!repoName || typeof repoName !== "string") return true;
-  const cleaned = repoName.toLowerCase().trim();
-  const normalizedExclusions = EXCLUDED_REPOS.map((name) => name.toLowerCase().trim());
-  return normalizedExclusions.includes(cleaned);
-}
-
-/**
- * Helper to determine if a repository homepage link is a valid external project demo.
- * Ignores links that point back to the portfolio site itself.
- */
-export function getLiveDemoUrl(homepage) {
-  if (!homepage || typeof homepage !== "string") return null;
-  const cleaned = homepage.trim().toLowerCase();
-  if (!cleaned || cleaned === "#" || cleaned === "/") return null;
-
-  // Filter out URLs that point back to the portfolio itself
-  const currentHost = typeof window !== "undefined" ? window.location.hostname.toLowerCase() : "";
-  if (
-    cleaned.includes("portfolio-m8u7.vercel.app") ||
-    cleaned.includes("portfolio-nexora-labs") ||
-    (currentHost && currentHost.length > 3 && cleaned.includes(currentHost))
-  ) {
-    return null;
-  }
-
-  return homepage.trim();
-}
-
-/**
- * Dynamically fetches authentic public repositories from GitHub API.
- * Automatically excludes repos listed in EXCLUDED_REPOS (e.g. Portfolio and AIworking860-art).
- * Any other project pushed to GitHub will automatically appear on the portfolio.
+ * Dynamically fetches authentic public repositories directly from GitHub API.
+ * Returns exact data array from https://api.github.com/users/AIworking860-art/repos.
+ * No hardcoded, fake, sample, or fallback projects.
  */
 export async function fetchGithubProjects() {
   const url = `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`;
@@ -65,32 +24,6 @@ export async function fetchGithubProjects() {
     throw new Error("Invalid GitHub API response format");
   }
 
-  return data.filter((repo) => repo && repo.name && !isExcludedRepo(repo.name));
-}
-
-/**
- * Fetches a single repository's full details from the GitHub API.
- * Used by the individual project detail page.
- * Blocks details if repo is in EXCLUDED_REPOS.
- */
-export async function fetchGithubRepoDetail(repoName) {
-  if (isExcludedRepo(repoName)) {
-    throw new Error("Repository is excluded from portfolio display.");
-  }
-
-  const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${repoName}`;
-
-  const response = await fetch(url, {
-    headers: {
-      Accept: "application/vnd.github.v3+json",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`GitHub API HTTP ${response.status}`);
-  }
-
-  const data = await response.json();
   return data;
 }
 

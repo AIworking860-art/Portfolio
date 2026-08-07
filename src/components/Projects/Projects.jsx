@@ -1,129 +1,193 @@
-import { useRef } from "react";
-import { Link } from "react-router-dom";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { FaGithub, FaStar, FaCodeBranch, FaFolderPlus, FaArrowRight, FaEye, FaRobot } from "react-icons/fa";
-import { useAgent } from "../../context/AgentContext";
+import { useEffect, useState, useCallback } from "react";
+import { FaGithub, FaStar, FaCodeBranch, FaExclamationTriangle, FaFolderOpen, FaFolderPlus } from "react-icons/fa";
+import { fetchGithubProjects, GITHUB_USERNAME } from "./github";
 import "./Projects.css";
 
-/* ─── 3D Tilt Card ──────────────────────────────────────────────────── */
-function TiltCard({ repo, index }) {
-  const cardRef = useRef(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [10, -10]), { stiffness: 300, damping: 30 });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-10, 10]), { stiffness: 300, damping: 30 });
-
-  const handleMouseMove = (e) => {
-    const rect = cardRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    x.set((e.clientX - rect.left) / rect.width - 0.5);
-    y.set((e.clientY - rect.top) / rect.height - 0.5);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  return (
-    <motion.div
-      ref={cardRef}
-      className="project-3d-card glass-panel"
-      style={{ rotateX, rotateY, transformPerspective: 1000, transformStyle: "preserve-3d" }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
-    >
-      {/* Auto-Generated Dynamic Cover Art Banner */}
-      <div
-        className="h-28 rounded-xl mb-4 p-3 flex flex-col justify-between relative overflow-hidden transition-all duration-300 group-hover:scale-[1.02]"
-        style={{ background: repo.coverGradient || "linear-gradient(135deg, #10b981, #06b6d4)" }}
-      >
-        <div className="flex items-center justify-between text-xs text-white/90 font-mono">
-          <span className="px-2 py-0.5 rounded bg-black/30 backdrop-blur-md border border-white/20">
-            {repo.language || "Multi-Stack"}
-          </span>
-          <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-emerald-300">
-            <FaRobot /> Auto-Indexed
-          </span>
-        </div>
-        <div className="text-lg font-extrabold text-white tracking-tight drop-shadow-md">
-          {repo.name}
-        </div>
-      </div>
-
-      <p className="project-repo-desc line-clamp-2 text-xs text-textMuted">
-        {repo.description}
-      </p>
-
-      {repo.aiSummary && (
-        <div className="mt-3 p-2.5 rounded-lg bg-white/5 border border-white/5 text-[11px] text-slate-300 leading-relaxed">
-          <span className="text-primary font-bold">AI Insight:</span> {repo.aiSummary}
-        </div>
-      )}
-
-      <div className="project-meta-row mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
-        <div className="meta-stats flex items-center gap-3 text-xs text-textMuted">
-          <span className="flex items-center gap-1"><FaStar className="text-amber-400" /> {repo.stargazers_count}</span>
-          <span className="flex items-center gap-1"><FaCodeBranch className="text-purple-400" /> {repo.forks_count}</span>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <Link to={`/projects/${repo.name}`} className="btn-view-details text-xs">
-            <FaEye /> Details
-          </Link>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-/* ─── Projects Section ──────────────────────────────── */
 function Projects() {
-  const { projects } = useAgent();
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [lastSyncedAt, setLastSyncedAt] = useState(null);
+
+  const loadProjects = useCallback(async () => {
+    try {
+      setError(false);
+      const data = await fetchGithubProjects();
+      setProjects(data);
+      setLastSyncedAt(new Date());
+    } catch (err) {
+      console.error("Failed to fetch live GitHub repos:", err);
+      setError(true);
+      setProjects([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadProjects();
+
+    // Auto-refresh GitHub repositories every 5 minutes automatically
+    const intervalId = setInterval(() => {
+      loadProjects();
+    }, 5 * 60 * 1000);
+
+    return () => clearInterval(intervalId);
+  }, [loadProjects]);
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "Recently";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
 
   return (
     <section className="projects-section" id="projects">
-      <div className="projects-container space-y-8">
+      <div className="projects-container">
+        
         {/* Section Header */}
-        <motion.div
-          className="projects-header text-center max-w-2xl mx-auto space-y-3"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="section-badge-live inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
+        <div className="projects-header">
+          <div className="section-badge-live">
             <span className="pulse-dot"></span>
-            <span>AUTONOMOUS MULTI-AGENT SYNC ACTIVE</span>
+            <span>LIVE GITHUB SYNC ACTIVE</span>
           </div>
 
-          <h2 className="projects-title text-3xl sm:text-4xl font-extrabold text-white">
-            AI-Indexed <span className="text-gradient">Repositories</span>
+          <h2 className="projects-title">
+            GitHub <span className="text-gradient">Projects</span>
           </h2>
 
-          <p className="projects-subtitle text-sm text-textMuted">
-            Automatically analyzed and documented whenever code is pushed to GitHub.
+          <p className="projects-subtitle">
+            Dynamically loaded from official GitHub account{" "}
+            <a
+              href={`https://github.com/${GITHUB_USERNAME}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="github-user-link"
+            >
+              @{GITHUB_USERNAME}
+            </a>
           </p>
-        </motion.div>
 
-        {/* Project Cards Grid */}
-        <div className="projects-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((repo, i) => (
-            <TiltCard key={repo.id} repo={repo} index={i} />
-          ))}
+          {lastSyncedAt && !error && (
+            <span className="auto-sync-status">
+              Auto-synced: {lastSyncedAt.toLocaleTimeString()} (Refreshes every 5 mins)
+            </span>
+          )}
         </div>
 
-        {/* CTA */}
-        <div className="text-center pt-4">
-          <Link to="/projects" className="btn-view-all inline-flex items-center gap-2">
-            <span>Explore All Projects & Architecture Specs</span>
-            <FaArrowRight />
-          </Link>
-        </div>
+        {/* Loading State */}
+        {loading && (
+          <div className="projects-loading-state glass-panel">
+            <div className="loading-spinner"></div>
+            <p>Fetching real-time repositories from GitHub (@{GITHUB_USERNAME})...</p>
+          </div>
+        )}
+
+        {/* Error State */}
+        {!loading && error && (
+          <div className="projects-error-state glass-panel">
+            <FaExclamationTriangle className="error-icon" />
+            <h3>Unable to load GitHub repositories at the moment. Please try again later.</h3>
+            <p className="error-sub">
+              Visit my official GitHub profile directly to view public repositories.
+            </p>
+            <a
+              href={`https://github.com/${GITHUB_USERNAME}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary-glow"
+            >
+              <FaGithub />
+              <span>Open GitHub Profile</span>
+            </a>
+          </div>
+        )}
+
+        {/* Empty State (When user has 0 public repos on GitHub) */}
+        {!loading && !error && projects.length === 0 && (
+          <div className="projects-empty-state glass-panel">
+            <div className="empty-icon-box">
+              <FaFolderOpen />
+            </div>
+            <h3 className="empty-title">No Public Projects Yet</h3>
+            <p className="empty-message">
+              New GitHub repositories will automatically appear here as soon as they are pushed to my GitHub account (<strong>@{GITHUB_USERNAME}</strong>).
+            </p>
+            <div className="empty-actions">
+              <a
+                href={`https://github.com/${GITHUB_USERNAME}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-github-profile-link"
+              >
+                <FaGithub />
+                <span>Visit https://github.com/{GITHUB_USERNAME}</span>
+              </a>
+            </div>
+          </div>
+        )}
+
+        {/* Real Repositories Grid (Only displayed when real public repos exist) */}
+        {!loading && !error && projects.length > 0 && (
+          <div className="projects-grid">
+            {projects.map((repo) => (
+              <div key={repo.id} className="project-3d-card glass-panel">
+                
+                <div className="project-card-header">
+                  <div className="repo-icon">
+                    <FaFolderPlus />
+                  </div>
+
+                  <div className="repo-lang-pill">
+                    <span className="lang-dot"></span>
+                    <span>{repo.language || "Code"}</span>
+                  </div>
+                </div>
+
+                <h3 className="project-repo-name">{repo.name}</h3>
+
+                <p className="project-repo-desc">
+                  {repo.description || "No description provided on GitHub."}
+                </p>
+
+                {/* Meta details: Stars, Forks, Last Updated */}
+                <div className="project-meta-row">
+                  <div className="meta-stats">
+                    <span title="Stars">
+                      <FaStar className="star-icon" /> {repo.stargazers_count || 0}
+                    </span>
+                    <span title="Forks">
+                      <FaCodeBranch className="fork-icon" /> {repo.forks_count || 0}
+                    </span>
+                  </div>
+
+                  <div className="meta-updated">
+                    Last Updated: {formatDate(repo.updated_at)}
+                  </div>
+                </div>
+
+                {/* GitHub Repository Button */}
+                <div className="project-card-actions">
+                  <a
+                    href={repo.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-github-repo"
+                  >
+                    <FaGithub />
+                    <span>View Repository</span>
+                  </a>
+                </div>
+
+              </div>
+            ))}
+          </div>
+        )}
+
       </div>
     </section>
   );
