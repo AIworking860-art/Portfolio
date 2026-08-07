@@ -1,9 +1,14 @@
 .footer-section {
-  background: rgba(3, 7, 18, 0.9);
+  background: rgba(3, 7, 18, 0.95);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding: 4rem 2rem 2rem 2rem;
   position: relative;
   overflow: hidden;
+}
+
+body.theme-light .footer-section {
+  background: rgba(248, 250, 252, 0.95);
+  border-top-color: rgba(0, 0, 0, 0.08);
 }
 
 .footer-container {
@@ -18,10 +23,15 @@
   gap: 3rem;
   padding-bottom: 3rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+}
+
+body.theme-light .footer-top {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
 }
 
 .footer-brand {
-  max-width: 460px;
+  max-width: 420px;
 }
 
 .footer-logo {
@@ -36,17 +46,54 @@
   margin-bottom: 1rem;
 }
 
+body.theme-light .footer-logo {
+  color: #0f172a;
+}
+
 .footer-brand-desc {
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   color: #94a3b8;
   line-height: 1.6;
 }
 
+body.theme-light .footer-brand-desc {
+  color: #475569;
+}
+
 .footer-heading {
-  font-size: 1rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+body.theme-light .footer-heading {
+  color: #0f172a;
+}
+
+.footer-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem 1.5rem;
+}
+
+.footer-nav-item {
+  color: #cbd5e1;
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+body.theme-light .footer-nav-item {
+  color: #475569;
+}
+
+.footer-nav-item:hover {
+  color: #10b981;
+  transform: translateX(3px);
 }
 
 .footer-social-links {
@@ -60,14 +107,18 @@
   align-items: center;
   gap: 0.65rem;
   color: #cbd5e1;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 500;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
+}
+
+body.theme-light .footer-social-item {
+  color: #475569;
 }
 
 .footer-social-item:hover {
-  color: #06b6d4;
+  color: #10b981;
   transform: translateX(4px);
 }
 
@@ -83,13 +134,17 @@
   color: #94a3b8;
 }
 
+body.theme-light .copyright-text {
+  color: #64748b;
+}
+
 .scroll-top-btn {
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #06b6d4;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #10b981;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,9 +153,9 @@
 }
 
 .scroll-top-btn:hover {
-  background: #06b6d4;
-  color: #ffffff;
-  box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+  background: #10b981;
+  color: #000000;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
   transform: translateY(-3px);
 }
 

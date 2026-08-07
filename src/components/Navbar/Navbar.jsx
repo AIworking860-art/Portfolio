@@ -11,7 +11,6 @@ function Navbar() {
   });
 
   const location = useLocation();
-  const isProjectsPage = location.pathname.startsWith("/projects");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,9 +34,7 @@ function Navbar() {
     setIsLightMode(!isLightMode);
   };
 
-  const getHashLink = (hash) => {
-    return isProjectsPage ? `/${hash}` : hash;
-  };
+  const isCurrentPath = (path) => location.pathname === path;
 
   return (
     <header className={`navbar-header ${scrolled ? "scrolled" : ""}`}>
@@ -49,13 +46,13 @@ function Navbar() {
 
         {/* Desktop Nav Links */}
         <nav className="navbar-links">
-          <Link to="/" className="nav-link">Home</Link>
-          <a href={getHashLink("#about")} className="nav-link">About</a>
-          <a href={getHashLink("#skills")} className="nav-link">Skills</a>
-          <Link to="/projects" className={`nav-link ${isProjectsPage ? "active" : ""}`}>Projects</Link>
-          <a href={getHashLink("#experience")} className="nav-link">Experience</a>
-          <a href={getHashLink("#github")} className="nav-link">GitHub</a>
-          <a href={getHashLink("#contact")} className="nav-link">Contact</a>
+          <Link to="/" className={`nav-link ${isCurrentPath("/") ? "active" : ""}`}>Home</Link>
+          <Link to="/about" className={`nav-link ${isCurrentPath("/about") ? "active" : ""}`}>About</Link>
+          <Link to="/skills" className={`nav-link ${isCurrentPath("/skills") ? "active" : ""}`}>Skills</Link>
+          <Link to="/projects" className={`nav-link ${location.pathname.startsWith("/projects") ? "active" : ""}`}>Projects</Link>
+          <Link to="/experience" className={`nav-link ${isCurrentPath("/experience") ? "active" : ""}`}>Experience</Link>
+          <Link to="/github" className={`nav-link ${isCurrentPath("/github") ? "active" : ""}`}>GitHub</Link>
+          <Link to="/contact" className={`nav-link ${isCurrentPath("/contact") ? "active" : ""}`}>Contact</Link>
         </nav>
 
         {/* Action Buttons */}
@@ -104,12 +101,12 @@ function Navbar() {
       {mobileMenuOpen && (
         <div className="mobile-drawer">
           <Link to="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-          <a href={getHashLink("#about")} onClick={() => setMobileMenuOpen(false)}>About</a>
-          <a href={getHashLink("#skills")} onClick={() => setMobileMenuOpen(false)}>Skills</a>
+          <Link to="/about" onClick={() => setMobileMenuOpen(false)}>About</Link>
+          <Link to="/skills" onClick={() => setMobileMenuOpen(false)}>Skills</Link>
           <Link to="/projects" onClick={() => setMobileMenuOpen(false)}>Projects</Link>
-          <a href={getHashLink("#experience")} onClick={() => setMobileMenuOpen(false)}>Experience</a>
-          <a href={getHashLink("#github")} onClick={() => setMobileMenuOpen(false)}>GitHub</a>
-          <a href={getHashLink("#contact")} onClick={() => setMobileMenuOpen(false)}>Contact</a>
+          <Link to="/experience" onClick={() => setMobileMenuOpen(false)}>Experience</Link>
+          <Link to="/github" onClick={() => setMobileMenuOpen(false)}>GitHub</Link>
+          <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
           <div className="mobile-socials">
             <button onClick={toggleTheme} className="mobile-theme-btn">
               {isLightMode ? <><FaMoon /> Dark Mode</> : <><FaSun /> Light Mode</>}

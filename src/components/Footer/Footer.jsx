@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { FaGithub, FaWhatsapp, FaEnvelope, FaArrowUp } from "react-icons/fa";
 import "./Footer.css";
 
@@ -12,16 +13,30 @@ function Footer() {
         
         <div className="footer-top">
           <div className="footer-brand">
-            <a href="#home" className="footer-logo">
-              <span className="logo-badge">AI</span>
+            <Link to="/" className="footer-logo">
+              <span className="logo-badge">MH</span>
               <span>Muhammad <span className="text-gradient">Hashir</span></span>
-            </a>
+            </Link>
             <p className="footer-brand-desc">
               AI & Python Developer specializing in Agentic AI, Generative AI, Python Architecture, and n8n Workflow Automations.
             </p>
           </div>
 
-          {/* Contact Links strictly limited to GitHub, Email, WhatsApp */}
+          {/* Quick Navigation Links */}
+          <div className="footer-links-group">
+            <h4 className="footer-heading">Quick Navigation</h4>
+            <div className="footer-nav-grid">
+              <Link to="/" className="footer-nav-item">Home</Link>
+              <Link to="/about" className="footer-nav-item">About</Link>
+              <Link to="/skills" className="footer-nav-item">Skills</Link>
+              <Link to="/projects" className="footer-nav-item">Projects</Link>
+              <Link to="/experience" className="footer-nav-item">Experience</Link>
+              <Link to="/github" className="footer-nav-item">GitHub</Link>
+              <Link to="/contact" className="footer-nav-item">Contact</Link>
+            </div>
+          </div>
+
+          {/* Direct Social Links */}
           <div className="footer-links-group">
             <h4 className="footer-heading">Direct Connect</h4>
             <div className="footer-social-links">

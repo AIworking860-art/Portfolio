@@ -1,21 +1,20 @@
-import { TypeAnimation } from "react-type-animation";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { TypeAnimation } from "react-type-animation";
 import { FaGithub, FaWhatsapp, FaEnvelope, FaCode, FaArrowRight, FaRobot, FaFileDownload, FaChevronDown } from "react-icons/fa";
 import HeroCanvas from "./HeroCanvas";
 import MotionWrapper from "./MotionWrapper";
+import CVModal from "../CVModal/CVModal";
 import "./Hero.css";
 
 function Hero() {
-  const handleDownloadCV = () => {
-    // Generate/download or open standard CV view
-    const link = document.createElement("a");
-    link.href = "mailto:hashir.muhmmad1427@gmail.com?subject=Request%20CV%20-%20Muhammad%20Hashir";
-    link.target = "_blank";
-    link.click();
-  };
+  const [isCVModalOpen, setIsCVModalOpen] = useState(false);
 
   return (
     <section className="hero-section" id="home">
+      {/* CV Download / View Modal */}
+      <CVModal isOpen={isCVModalOpen} onClose={() => setIsCVModalOpen(false)} />
+
       <div className="hero-container">
         
         {/* Left Column: Text & CTA */}
@@ -58,7 +57,7 @@ function Hero() {
               <FaArrowRight className="btn-icon" />
             </a>
 
-            <button onClick={handleDownloadCV} className="btn-glass cursor-pointer">
+            <button onClick={() => setIsCVModalOpen(true)} className="btn-glass cursor-pointer">
               <FaFileDownload className="btn-icon text-emerald-400" />
               <span>Download CV</span>
             </button>

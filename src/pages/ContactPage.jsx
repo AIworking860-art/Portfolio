@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import Navbar from "../components/Navbar/Navbar";
-import Experience from "../components/Experience/Experience";
+import Contact from "../components/Contact/Contact";
 import Footer from "../components/Footer/Footer";
 
-function ExperiencePage() {
+function ContactPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -12,11 +12,11 @@ function ExperiencePage() {
     <>
       <Navbar />
       <div style={{ paddingTop: "4rem", minHeight: "80vh" }}>
-        <Experience />
+        <Contact />
       </div>
       <Footer />
     </>
   );
 }
 
-export default ExperiencePage;
+export default ContactPage;
