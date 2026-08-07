@@ -1,0 +1,306 @@
+/* ============================================================
+   PROJECT DETAIL PAGE
+   ============================================================ */
+
+.pd-page {
+  min-height: 100vh;
+  padding: 7rem 2rem 4rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Loading */
+.pd-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 1.25rem;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.pd-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255,255,255,0.08);
+  border-top-color: #10b981;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Not Found */
+.pd-notfound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 1rem;
+  color: #94a3b8;
+  text-align: center;
+}
+
+.pd-notfound svg { font-size: 3rem; color: #ef4444; }
+.pd-notfound h2 { font-size: 1.5rem; font-weight: 800; color: #f1f5f9; }
+
+/* Back Button Row */
+.pd-back-row {
+  margin-bottom: 1.75rem;
+}
+
+.pd-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #94a3b8;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  transition: all 0.22s ease;
+}
+
+.pd-back-btn:hover {
+  color: #10b981;
+  border-color: rgba(16,185,129,0.4);
+  background: rgba(16,185,129,0.08);
+}
+
+/* ── Hero Banner ── */
+.pd-hero {
+  border-radius: 20px;
+  padding: 2rem 2.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.pd-hero-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  flex: 1;
+  min-width: 280px;
+}
+
+.pd-repo-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.pd-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+  color: #94a3b8;
+  margin-bottom: 0.5rem;
+}
+
+.pd-breadcrumb svg { font-size: 1rem; }
+.pd-repo-name {
+  color: #f1f5f9;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.pd-desc {
+  font-size: 0.9rem;
+  color: #cbd5e1;
+  line-height: 1.65;
+  margin-bottom: 0.85rem;
+}
+
+/* Topics */
+.pd-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.pd-topic-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  color: #06b6d4;
+}
+
+/* Hero Action Buttons */
+.pd-hero-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.pd-btn-github {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 1.35rem;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 12px;
+  color: #f1f5f9;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.22s ease;
+  white-space: nowrap;
+}
+
+.pd-btn-github:hover {
+  background: #24292f;
+  border-color: rgba(255,255,255,0.3);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.pd-btn-demo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 1.35rem;
+  background: linear-gradient(135deg, #10b981, #06b6d4);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.22s ease;
+  white-space: nowrap;
+  box-shadow: 0 0 20px rgba(16,185,129,0.3);
+}
+
+.pd-btn-demo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(16,185,129,0.5);
+}
+
+/* ── Stats Row ── */
+.pd-stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.pd-stat-card {
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  transition: all 0.22s ease;
+}
+
+.pd-stat-card:hover { transform: translateY(-2px); }
+
+.pds-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.pds-icon.star   { color: #eab308; }
+.pds-icon.fork   { color: #8b5cf6; }
+.pds-icon.eye    { color: #06b6d4; }
+.pds-icon.date   { color: #10b981; }
+.pds-icon.update { color: #f59e0b; }
+
+.pds-val {
+  display: block;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #f1f5f9;
+  line-height: 1.2;
+}
+
+.pds-lbl {
+  display: block;
+  font-size: 0.7rem;
+  color: #64748b;
+  font-weight: 500;
+  margin-top: 0.1rem;
+}
+
+/* ── README Section ── */
+.pd-readme-section {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.pd-readme-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #94a3b8;
+  background: rgba(255,255,255,0.02);
+}
+
+.pd-readme-content {
+  padding: 1.75rem;
+  font-size: 0.82rem;
+  color: #cbd5e1;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.pd-readme-content::-webkit-scrollbar { width: 5px; }
+.pd-readme-content::-webkit-scrollbar-thumb { background: #10b981; border-radius: 3px; }
+
+.pd-no-readme {
+  padding: 3rem 2rem;
+  text-align: center;
+  color: #64748b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.88rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .pd-hero { flex-direction: column; }
+  .pd-hero-actions { flex-direction: row; flex-wrap: wrap; }
+  .pd-stats-row { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .pd-page { padding: 6rem 1rem 3rem; }
+  .pd-stats-row { grid-template-columns: repeat(2, 1fr); gap: 0.65rem; }
+  .pd-hero { padding: 1.25rem; }
+  .pd-hero-left { flex-direction: column; }
+}

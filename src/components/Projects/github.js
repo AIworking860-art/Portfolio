@@ -1,9 +1,10 @@
 const GITHUB_USERNAME = "AIworking860-art";
 
+// Repos to HIDE from portfolio (still exist on GitHub)
+export const HIDDEN_REPOS = ["Portfolio", "AIworking860-art"];
+
 /**
- * Dynamically fetches authentic public repositories directly from GitHub API.
- * Returns exact data array from https://api.github.com/users/AIworking860-art/repos.
- * No hardcoded, fake, sample, or fallback projects.
+ * Fetches public repos from GitHub and filters out hidden ones.
  */
 export async function fetchGithubProjects() {
   const url = `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`;
@@ -24,7 +25,8 @@ export async function fetchGithubProjects() {
     throw new Error("Invalid GitHub API response format");
   }
 
-  return data;
+  // Filter out hidden repos
+  return data.filter((repo) => !HIDDEN_REPOS.includes(repo.name));
 }
 
 export { GITHUB_USERNAME };

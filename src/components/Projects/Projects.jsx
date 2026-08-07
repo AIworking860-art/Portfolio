@@ -1,7 +1,23 @@
 import { useEffect, useState, useCallback } from "react";
-import { FaGithub, FaStar, FaCodeBranch, FaExclamationTriangle, FaFolderOpen, FaFolderPlus } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import {
+  FaGithub, FaStar, FaCodeBranch, FaExclamationTriangle,
+  FaFolderOpen, FaFolder, FaArrowRight, FaSync
+} from "react-icons/fa";
 import { fetchGithubProjects, GITHUB_USERNAME } from "./github";
 import "./Projects.css";
+
+// Language color map
+const LANG_COLORS = {
+  Python: "#3572A5",
+  JavaScript: "#f1e05a",
+  TypeScript: "#3178c6",
+  HTML: "#e34c26",
+  CSS: "#563d7c",
+  Jupyter: "#DA5B0B",
+  Shell: "#89e051",
+  default: "#8b5cf6",
+};
 
 function Projects() {
   const [projects, setProjects] = useState([]);
@@ -26,42 +42,34 @@ function Projects() {
 
   useEffect(() => {
     loadProjects();
-
-    // Auto-refresh GitHub repositories every 5 minutes automatically
-    const intervalId = setInterval(() => {
-      loadProjects();
-    }, 5 * 60 * 1000);
-
+    const intervalId = setInterval(loadProjects, 5 * 60 * 1000);
     return () => clearInterval(intervalId);
   }, [loadProjects]);
 
   const formatDate = (dateString) => {
     if (!dateString) return "Recently";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
+    return new Date(dateString).toLocaleDateString("en-US", {
+      month: "short", day: "numeric", year: "numeric",
     });
   };
+
+  const getLangColor = (lang) => LANG_COLORS[lang] || LANG_COLORS.default;
 
   return (
     <section className="projects-section" id="projects">
       <div className="projects-container">
-        
+
         {/* Section Header */}
         <div className="projects-header">
           <div className="section-badge-live">
             <span className="pulse-dot"></span>
-            <span>LIVE GITHUB SYNC ACTIVE</span>
+            <span>LIVE GITHUB SYNC</span>
           </div>
-
           <h2 className="projects-title">
-            GitHub <span className="text-gradient">Projects</span>
+            My <span className="text-gradient">Projects</span>
           </h2>
-
           <p className="projects-subtitle">
-            Dynamically loaded from official GitHub account{" "}
+            Live from{" "}
             <a
               href={`https://github.com/${GITHUB_USERNAME}`}
               target="_blank"
@@ -71,121 +79,118 @@ function Projects() {
               @{GITHUB_USERNAME}
             </a>
           </p>
-
           {lastSyncedAt && !error && (
             <span className="auto-sync-status">
-              Auto-synced: {lastSyncedAt.toLocaleTimeString()} (Refreshes every 5 mins)
+              <FaSync style={{ fontSize: "0.65rem" }} />
+              Synced: {lastSyncedAt.toLocaleTimeString()}
             </span>
           )}
         </div>
 
-        {/* Loading State */}
+        {/* Loading */}
         {loading && (
           <div className="projects-loading-state glass-panel">
             <div className="loading-spinner"></div>
-            <p>Fetching real-time repositories from GitHub (@{GITHUB_USERNAME})...</p>
+            <p>Loading repositories from GitHub...</p>
           </div>
         )}
 
-        {/* Error State */}
+        {/* Error */}
         {!loading && error && (
           <div className="projects-error-state glass-panel">
             <FaExclamationTriangle className="error-icon" />
-            <h3>Unable to load GitHub repositories at the moment. Please try again later.</h3>
-            <p className="error-sub">
-              Visit my official GitHub profile directly to view public repositories.
-            </p>
+            <h3>Could not load GitHub repos. Try again later.</h3>
             <a
               href={`https://github.com/${GITHUB_USERNAME}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary-glow"
+              className="btn-github-repo"
             >
-              <FaGithub />
-              <span>Open GitHub Profile</span>
+              <FaGithub /> View on GitHub
             </a>
           </div>
         )}
 
-        {/* Empty State (When user has 0 public repos on GitHub) */}
+        {/* Empty */}
         {!loading && !error && projects.length === 0 && (
           <div className="projects-empty-state glass-panel">
-            <div className="empty-icon-box">
-              <FaFolderOpen />
+            <FaFolderOpen className="empty-icon" />
+            <h3>No Public Projects Yet</h3>
+            <p>Projects will appear here automatically when pushed to GitHub.</p>
+          </div>
+        )}
+
+        {/* Projects Grid — Small Cards */}
+        {!loading && !error && projects.length > 0 && (
+          <>
+            <div className="projects-grid-small">
+              {projects.map((repo) => (
+                <Link
+                  key={repo.id}
+                  to={`/projects/${repo.name}`}
+                  className="project-small-card glass-panel"
+                >
+                  {/* Card Top */}
+                  <div className="psc-top">
+                    <div className="psc-folder-icon">
+                      <FaFolder />
+                    </div>
+                    <div
+                      className="psc-lang-dot"
+                      style={{ background: getLangColor(repo.language) }}
+                      title={repo.language || "Code"}
+                    />
+                  </div>
+
+                  {/* Name */}
+                  <h3 className="psc-name">{repo.name}</h3>
+
+                  {/* Description */}
+                  <p className="psc-desc">
+                    {repo.description || "No description provided."}
+                  </p>
+
+                  {/* Footer stats */}
+                  <div className="psc-footer">
+                    <span className="psc-stat">
+                      <FaStar className="psc-stat-icon star" />
+                      {repo.stargazers_count || 0}
+                    </span>
+                    <span className="psc-stat">
+                      <FaCodeBranch className="psc-stat-icon fork" />
+                      {repo.forks_count || 0}
+                    </span>
+                    {repo.language && (
+                      <span className="psc-lang">
+                        <span
+                          className="psc-lang-badge"
+                          style={{ background: getLangColor(repo.language) }}
+                        />
+                        {repo.language}
+                      </span>
+                    )}
+                    <span className="psc-arrow">
+                      <FaArrowRight />
+                    </span>
+                  </div>
+                </Link>
+              ))}
             </div>
-            <h3 className="empty-title">No Public Projects Yet</h3>
-            <p className="empty-message">
-              New GitHub repositories will automatically appear here as soon as they are pushed to my GitHub account (<strong>@{GITHUB_USERNAME}</strong>).
-            </p>
-            <div className="empty-actions">
+
+            {/* View All on GitHub */}
+            <div className="projects-view-all">
               <a
                 href={`https://github.com/${GITHUB_USERNAME}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-github-profile-link"
+                className="btn-view-all-github"
               >
                 <FaGithub />
-                <span>Visit https://github.com/{GITHUB_USERNAME}</span>
+                <span>View All on GitHub</span>
+                <FaArrowRight />
               </a>
             </div>
-          </div>
-        )}
-
-        {/* Real Repositories Grid (Only displayed when real public repos exist) */}
-        {!loading && !error && projects.length > 0 && (
-          <div className="projects-grid">
-            {projects.map((repo) => (
-              <div key={repo.id} className="project-3d-card glass-panel">
-                
-                <div className="project-card-header">
-                  <div className="repo-icon">
-                    <FaFolderPlus />
-                  </div>
-
-                  <div className="repo-lang-pill">
-                    <span className="lang-dot"></span>
-                    <span>{repo.language || "Code"}</span>
-                  </div>
-                </div>
-
-                <h3 className="project-repo-name">{repo.name}</h3>
-
-                <p className="project-repo-desc">
-                  {repo.description || "No description provided on GitHub."}
-                </p>
-
-                {/* Meta details: Stars, Forks, Last Updated */}
-                <div className="project-meta-row">
-                  <div className="meta-stats">
-                    <span title="Stars">
-                      <FaStar className="star-icon" /> {repo.stargazers_count || 0}
-                    </span>
-                    <span title="Forks">
-                      <FaCodeBranch className="fork-icon" /> {repo.forks_count || 0}
-                    </span>
-                  </div>
-
-                  <div className="meta-updated">
-                    Last Updated: {formatDate(repo.updated_at)}
-                  </div>
-                </div>
-
-                {/* GitHub Repository Button */}
-                <div className="project-card-actions">
-                  <a
-                    href={repo.html_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-github-repo"
-                  >
-                    <FaGithub />
-                    <span>View Repository</span>
-                  </a>
-                </div>
-
-              </div>
-            ))}
-          </div>
+          </>
         )}
 
       </div>
