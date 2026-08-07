@@ -35,12 +35,13 @@ function Navbar() {
         {/* Logo */}
         <Link to="/" className="navbar-logo">
           <span className="logo-badge flex items-center gap-1">
-            <FaRobot className="text-xs" /> OS
+            MH
           </span>
           <span className="logo-name">
-            Nexora<span className="logo-highlight">AI</span>
+            Muhammad<span className="logo-highlight"> Hashir</span>
           </span>
         </Link>
+
 
         {/* Desktop Links */}
         <nav className="navbar-links">

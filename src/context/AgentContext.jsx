@@ -118,38 +118,39 @@ When hundreds of autonomous agents collaborate on complex coding tasks, inter-ag
 ];
 
 const INITIAL_RESUME = {
-  name: "Usman Ghani",
-  role: "Lead Autonomous Systems & Full-Stack AI Engineer",
-  location: "Global / Remote",
-  summary: "Architect of self-updating multi-agent software platforms, GPU WebGL visualization, and autonomous software development pipelines.",
+  name: "Muhammad Hashir",
+  role: "AI & Python Developer",
+  location: "Pakistan • Remote / Global",
+  summary: "Specialized AI & Python Developer focused on Agentic AI, Generative AI, Python Architecture, and n8n Workflow Automation. I build intelligent, autonomous systems that transform complex workflows into seamless digital experiences.",
   skills: [
-    { name: "Autonomous AI Agents", level: 98, category: "AI & Systems" },
-    { name: "React 19 & Next.js", level: 95, category: "Frontend" },
-    { name: "Three.js & WebGL Shaders", level: 92, category: "3D & Graphics" },
-    { name: "Node.js / Python / Rust", level: 90, category: "Backend" },
-    { name: "Distributed Swarms", level: 88, category: "AI & Systems" },
-    { name: "Tailwind & CSS Systems", level: 96, category: "Frontend" },
+    { name: "Agentic AI & Multi-Agent Systems", level: 96, category: "AI" },
+    { name: "Python Development", level: 95, category: "Backend" },
+    { name: "Generative AI & LLMs", level: 93, category: "AI" },
+    { name: "n8n Workflow Automation", level: 90, category: "Automation" },
+    { name: "RAG & Vector Databases", level: 88, category: "AI" },
+    { name: "API Design & Integration", level: 87, category: "Backend" },
   ],
   experience: [
     {
-      company: "Nexora Intelligence Labs",
-      title: "Principal AI Orchestrator Engineer",
-      period: "2024 — Present",
-      description: "Pioneered autonomous multi-agent portfolio workflows, reducing developer documentation overhead by 100%. Implemented 3D WebGL shader renderers for real-time user interfaces.",
+      company: "Freelance / International Clients",
+      title: "AI & Python Developer",
+      period: "2023 — Present",
+      description: "Building autonomous AI agent systems, LLM-powered applications, and n8n workflow automation pipelines for international clients and startups worldwide.",
     },
     {
-      company: "Quantum Cybernetics",
-      title: "Senior AI Systems Developer",
-      period: "2022 — 2024",
-      description: "Designed high-throughput vector routing channels for agentic LLM swarms. Improved multi-agent consensus speeds by 420%.",
+      company: "Personal Projects & Open Source",
+      title: "Agentic AI Researcher",
+      period: "2022 — Present",
+      description: "Researching and developing multi-agent architectures, RAG pipelines, and generative AI applications. Contributing to open-source AI tooling and automation frameworks.",
     },
   ],
   autoBullets: [
-    "🤖 Auto-Generated: Processed 45+ Git Push events; auto-updated 12 project documentation specs.",
-    "🚀 Auto-Generated: Deployed high-performance WebGL 3D shader canvas supporting 10,000+ interactive particle nodes at 60 FPS.",
-    "⚡ Auto-Generated: Engineered zero-latency multi-agent orchestration context for real-time repository ingestion.",
+    "🤖 Auto-Generated: Built autonomous multi-agent portfolio platform with 80+ specialized AI agents.",
+    "🚀 Auto-Generated: Developed n8n automation pipelines reducing manual workflow overhead by 100%.",
+    "⚡ Auto-Generated: Engineered RAG-powered chatbot with vector database retrieval for enterprise client.",
   ],
 };
+
 
 const AgentContext = createContext();
 

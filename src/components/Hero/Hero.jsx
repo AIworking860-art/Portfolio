@@ -1,6 +1,6 @@
 import { TypeAnimation } from "react-type-animation";
 import { Link } from "react-router-dom";
-import { FaGithub, FaPalette, FaArrowRight, FaRobot, FaMicrochip, FaPlay, FaSync } from "react-icons/fa";
+import { FaGithub, FaPalette, FaRobot, FaMicrochip, FaPlay, FaSync, FaBrain, FaCode } from "react-icons/fa";
 import { useTheme } from "../../context/ThemeContext";
 import { useAgent } from "../../context/AgentContext";
 import HeroCanvas from "./HeroCanvas";
@@ -18,87 +18,89 @@ function Hero() {
         <MotionWrapper className="hero-content">
           <div className="hero-status-pill">
             <span className="status-dot"></span>
-            <span>Master AI Portfolio Orchestrator • 2026 Edition</span>
+            <span>AI & Python Developer • Available for Hire</span>
           </div>
 
-          <h4 className="hero-greeting">Autonomous AI Platform</h4>
+          <h4 className="hero-greeting">Hi, I'm</h4>
           <h1 className="hero-title">
-            Usman <span className="text-gradient">Ghani</span>
+            Muhammad <span className="text-gradient">Hashir</span>
           </h1>
 
           <div className="hero-subtitle-wrapper">
-            <span className="static-prefix">Autonomous </span>
             <TypeAnimation
               sequence={[
-                "AI Portfolio Orchestrator", 2200,
-                "Multi-Agent System Architect", 2200,
-                "Agentic AI & Swarm Specialist", 2200,
-                "3D WebGL & Shader Engineer", 2200,
+                "Agentic AI Developer", 2200,
+                "Python Architect", 2200,
+                "Generative AI Engineer", 2200,
+                "n8n Workflow Automation", 2200,
+                "Multi-Agent System Builder", 2200,
               ]}
-              speed={45}
+              speed={48}
               repeat={Infinity}
               className="hero-typewriter"
             />
           </div>
 
           <p className="hero-bio">
-            An intelligent multi-agent platform that monitors GitHub repositories in real time, automatically analyzing code diffs, generating technical documentation, creating blog articles, rendering cover artwork, and auto-updating resumes without manual intervention.
+            I build intelligent, autonomous AI systems — from multi-agent pipelines to generative AI applications, 
+            agentic workflows, and Python automation platforms. Specializing in LLMs, RAG, n8n, and cutting-edge AI architecture.
           </p>
 
           {/* Action Buttons */}
           <div className="hero-action-buttons">
-            <button
-              onClick={() => runOrchestratorPipeline()}
-              disabled={isExecuting}
-              className="btn-primary-glow cursor-pointer"
+            <a
+              href="https://github.com/AIworking860-art"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary-glow"
             >
-              <FaPlay className={isExecuting ? "animate-spin" : ""} />
-              <span>{isExecuting ? "Pipeline Running..." : "Simulate Git Push"}</span>
-            </button>
+              <FaGithub />
+              <span>View GitHub</span>
+            </a>
+
+            <Link to="/projects" className="btn-glass">
+              <FaCode className="text-secondary" />
+              <span>See Projects</span>
+            </Link>
 
             <button
               onClick={() => setIsCustomizerOpen(true)}
               className="btn-glass cursor-pointer"
             >
               <FaPalette className="text-primary" />
-              <span>Theme Studio ({activeTheme.name})</span>
+              <span>Theme Studio</span>
             </button>
-
-            <Link to="/orchestrator" className="btn-glass">
-              <FaMicrochip className="text-secondary" />
-              <span>Orchestrator Dashboard</span>
-            </Link>
           </div>
 
           {/* Quick Telemetry Metrics */}
           <div className="hero-metrics-grid">
             <div className="metric-item glass-panel">
-              <FaRobot className="metric-icon cyan" />
+              <FaBrain className="metric-icon cyan" />
               <div>
-                <h4 className="metric-val">10 Autonomous Agents</h4>
-                <p className="metric-lbl">Multi-Agent Workflow</p>
+                <h4 className="metric-val">80+ AI Agents</h4>
+                <p className="metric-lbl">Autonomous Pipeline</p>
               </div>
             </div>
 
             <div className="metric-item glass-panel">
               <FaGithub className="metric-icon purple" />
               <div>
-                <h4 className="metric-val">{projects.length} Sync Repos</h4>
-                <p className="metric-lbl">Auto-Indexed Docs</p>
+                <h4 className="metric-val">{projects.length}+ Projects</h4>
+                <p className="metric-lbl">Live on GitHub</p>
               </div>
             </div>
 
             <div className="metric-item glass-panel">
               <FaSync className="metric-icon blue" />
               <div>
-                <h4 className="metric-val">Zero Manual Work</h4>
+                <h4 className="metric-val">Zero Manual</h4>
                 <p className="metric-lbl">Full Automation</p>
               </div>
             </div>
           </div>
         </MotionWrapper>
 
-        {/* Right Column: 3D WebGL Floating Visualizer */}
+        {/* Right Column: Profile Card */}
         <div className="hero-visual-wrapper">
           <div className="hero-3d-canvas">
             <HeroCanvas />
@@ -108,19 +110,28 @@ function Hero() {
           <div className="profile-card-3d animate-float">
             <div className="profile-image-container">
               <div className="profile-glow-ring"></div>
-              <div className="profile-image-frame flex items-center justify-center bg-primary/20 text-primary text-5xl">
-                <FaRobot />
+              <div className="profile-image-frame">
+                <img
+                  src="/Portfolio/muhammad-hashir.jpg"
+                  alt="Muhammad Hashir"
+                  className="profile-img"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "/muhammad-hashir.jpg";
+                  }}
+                />
               </div>
             </div>
 
             <div className="profile-info-badge glass-panel">
-              <h3 className="profile-name">Usman Ghani</h3>
-              <p className="profile-title-tag">Lead AI Systems Architect</p>
+              <h3 className="profile-name">Muhammad Hashir</h3>
+              <p className="profile-title-tag">AI & Python Developer</p>
               <div className="profile-skills-row">
-                <span className="mini-badge">Multi-Agent</span>
-                <span className="mini-badge">Git Push Sync</span>
-                <span className="mini-badge">LLM Docs</span>
-                <span className="mini-badge">3D WebGL</span>
+                <span className="mini-badge">Agentic AI</span>
+                <span className="mini-badge">Python</span>
+                <span className="mini-badge">LLMs</span>
+                <span className="mini-badge">n8n</span>
+                <span className="mini-badge">RAG</span>
               </div>
             </div>
           </div>
