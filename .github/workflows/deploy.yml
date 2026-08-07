@@ -1,4 +1,4 @@
-name: Deploy Autonomous AI Portfolio OS
+name: Deploy Autonomous AI Portfolio OS → Vercel
 
 # ─── Trigger ────────────────────────────────────────────────────────
 on:
@@ -10,13 +10,11 @@ on:
 # ─── Permissions ────────────────────────────────────────────────────
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 # ─── Jobs ───────────────────────────────────────────────────────────
 jobs:
-  build-and-deploy:
-    name: Build & Deploy to GitHub Pages
+  deploy-to-vercel:
+    name: 🚀 Build & Deploy to Vercel
     runs-on: ubuntu-latest
 
     steps:
@@ -39,14 +37,18 @@ jobs:
       - name: ⚡ Build Vite Production Bundle
         run: npm run build
 
-      # 5. Deploy built /dist folder to GitHub Pages (gh-pages branch)
-      - name: 🚀 Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: gh-pages
-          force_orphan: true
-          user_name: "GitHub Actions Bot"
-          user_email: "github-actions[bot]@users.noreply.github.com"
-          commit_message: "🤖 Auto-Deploy: AI Portfolio OS Update from main branch"
+      # 5. Install Vercel CLI
+      - name: 🔧 Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      # 6. Pull Vercel project settings
+      - name: 📡 Pull Vercel Project Settings
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      # 7. Build on Vercel
+      - name: 🏗️ Build on Vercel
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      # 8. Deploy to Vercel production
+      - name: 🚀 Deploy to Vercel Production
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
