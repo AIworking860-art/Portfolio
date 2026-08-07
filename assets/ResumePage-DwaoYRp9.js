@@ -1,0 +1,1 @@
+import{lt as e,ut as t}from"./fa-BZCP_0PU.js";import{t as n}from"./ResumeSection-VkyfzEnD.js";t();var r=e();function i(){return(0,r.jsx)(`div`,{className:`min-h-screen pt-28 pb-20 px-4 sm:px-8 max-w-7xl mx-auto`,children:(0,r.jsx)(n,{})})}export{i as default};
